@@ -24,7 +24,7 @@ $(document).ready(function(){
   var refresh = form.children('#auto-refresh');
   var iframe = $('#theme-preview');
   var hash = window.location.hash;
-  var appearanceSelector = $('#appearance-selector summary');
+  var appearanceSelector = $('details summary');
 
   function fontSelector (selected) {
     var select = $('<select></select>');
@@ -53,7 +53,7 @@ $(document).ready(function(){
 
   function setAppearanceOptions (options) {
     var selector = $('#appearance-selector .options');
-    selector.children(':not(:submit)').remove();
+    selector.children(':not(.submit)').remove();
     $.each(options, function (key, value) {
       $.each(value, function (name, content) {
         var p = $('<p><label>'+name+'</label></p>');
@@ -76,7 +76,7 @@ $(document).ready(function(){
           p.append('<input type="text" value="'+content+'" name="'+k+':'+name+'" />');
           break; 
         }
-        p.insertBefore(selector.children(':submit'));
+        p.insertBefore(selector.children('.submit'));
       });
     });
   }
