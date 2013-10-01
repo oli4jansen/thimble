@@ -219,18 +219,13 @@ input[type=text] {
 	#theme-form .menu-item {
 		padding: ;
 	}
-	#theme-form details {
+	#theme-form #appearance-selector {
 		position: relative;
 		margin: 0;
 		width: 100%;
 		display: block;
 	}
-		#theme-form details summary {
-			cursor: pointer;
-			margin: 0 5px;
-			padding: 0;
-		}
-		#theme-form details .options {
+		#theme-form .options {
 			width: 100%;
 			display: block;
 			
@@ -250,13 +245,13 @@ input[type=text] {
 			-o-box-shadow: 0 1px 5px rgba(0,0,0,0.8);
 			box-shadow: 0 1px 5px rgba(0,0,0,0.8);		
 		}
-			#theme-form details .options p {
+			#theme-form #appearance-selector .options p {
 				margin: 0;
 				padding: 5px 12px;
 				text-align: left;
 				border-bottom: 1px solid rgba(0,0,0,0.1);
 			}
-				#theme-form details .options p .label {
+				#theme-form #appearance-selector .options p .label {
 					display: inline-block;
 					width: 30%;
 					font-weight: bold;
@@ -264,8 +259,8 @@ input[type=text] {
 					text-align: left;
 					font-size: .9em;
 				}
-				#theme-form details .options p input,
-				#theme-form details .options p select {
+				#theme-form #appearance-selector .options p input,
+				#theme-form #appearance-selector .options p select {
 					display: inline-block;
 					width: 70%;
 					border: 0;
@@ -276,20 +271,20 @@ input[type=text] {
 					background-color: transparent;
 					margin: 0;
 				}
-				#theme-form details .options p select {
+				#theme-form #appearance-selector .options p select {
 					direction: rtl;
 				}
-				#theme-form details .options p input[type=checkbox] {
+				#theme-form #appearance-selector .options p input[type=checkbox] {
 					width: auto;
 					float: right;
 					display: block;
 					margin: 5px 0;
 				}
-				#theme-form details .options p.checkbox .label {
+				#theme-form #appearance-selector .options p.checkbox .label {
 					width: auto;
 				}
 				
-		#theme-form details .options label {
+		#theme-form #appearance-selector .options label {
 			font-family: Helvetica, Arial, sans-serif;
 			font-weight: normal;
 			font-size: 100%;

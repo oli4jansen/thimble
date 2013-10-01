@@ -34,13 +34,9 @@
 		
 			<hr>
 		
-			<div class="menu-item">
-				<details id="appearance-selector">
-					<summary><h3>Appearance</h3></summary>
-					<div class="options">
-						
-					</div>
-				</details>
+			<div class="menu-item" id="appearance-selector">
+				<h3>Appearance</h3>
+				<div class="options"></div>
 			</div>
 		</form>
 	</div>
