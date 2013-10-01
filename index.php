@@ -13,41 +13,59 @@
 	<link type="text/css" rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-	<form method="get" action="theme.php" id="theme-select">
-		<span class="logo">thimble</span>
+	<div class="sidemenu">
+		<form method="get" action="theme.php" id="theme-form">
+			<div class="title"><input type="submit" value="Apply" /></div>
 	
-		<details id="appearance-selector">
-			<summary>Theme options</summary>
-			<div class="options">
-				<p class="submit"><input type="submit" value="Apply" /></p>
-			</div>
-		</details>
-		
-	<!--	<details id="options-selector">
-			<summary>Options</summary>
-			<div class="options">
-				<a href="http://www.tumblr.com/docs/en/custom_themes">Theme Documentation</a>
-
-				<input type="checkbox" name="auto-refresh" id="auto-refresh">
-				<label for="auto-refresh" class="small">Auto Refresh?</label>
-			</div>
-		</details>-->
-		
-		<select name="theme" id="theme-selector">
-			<?php
-				foreach (glob('themes/*.html') as $theme) {
-		        $theme = basename($theme);
-					if (($theme !== '.') && ($theme !== '..')) {
-						echo '<option value="'.$theme.'">'.$theme.'</option>';
+			<div class="menu-item">
+				<h3>Select theme</h3>
+				
+				<select name="theme" id="theme-selector">
+					<?php
+					foreach (glob('themes/*.html') as $theme) {
+				    	$theme = basename($theme);
+				    	if (($theme !== '.') && ($theme !== '..')) {
+							echo '<option value="'.$theme.'">'.$theme.'</option>';
+						}
 					}
-				}
-			?>
-		</select>
+					?>
+				</select>
+			</div>
 		
-	</form>
+			<hr>
+		
+			<div class="menu-item">
+				<details id="appearance-selector">
+					<summary><h3>Appearance</h3></summary>
+					<div class="options">
+						
+					</div>
+				</details>
+			</div>
+		</form>
+	</div>
+	<div class="holder">
+		<div id="header">
+			<span class="logo">thimble</span>
+		
+			<span class="menu-trigger">Settings</span>
+			
+		<!--	<details id="options-selector">
+				<summary>Options</summary>
+				<div class="options">
+					<a href="http://www.tumblr.com/docs/en/custom_themes">Theme Documentation</a>
 	
-	<div id="theme-container">
-		<iframe id="theme-preview" border="0" frameborder="0"></iframe>
+					<input type="checkbox" name="auto-refresh" id="auto-refresh">
+					<label for="auto-refresh" class="small">Auto Refresh?</label>
+				</div>
+			</details>
+			-->
+			
+		</div>
+		
+		<div id="theme-container">
+			<iframe id="theme-preview" border="0" frameborder="0"></iframe>
+		</div>
 	</div>
 </body>	
 </html>

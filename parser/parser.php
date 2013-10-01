@@ -22,17 +22,17 @@ class ThimbleParser {
 		'PortraitURL-64' 	=> "http://assets.tumblr.com/images/default_avatar_64.gif",
 		'PortraitURL-96' 	=> "http://assets.tumblr.com/images/default_avatar_96.gif",
 		'PortraitURL-128' 	=> "http://assets.tumblr.com/images/default_avatar_128.gif",
-		'CopyrightYears'	=> '2007-2010',	
+		'CopyrightYears'	=> '2007-2013',	
 	);
 
-  public $localization = array();
+	public $localization = array();
 	
 	public $template = array();	
 		
 	public function __construct($data = array(), $lang = array(), $type = 'index') {
 		$this->type = $type;
 		$this->template = array_merge($this->defaults, Spyc::YAMLLoad($data));
-    $this->localization = Spyc::YAMLLoad($lang);
+		$this->localization = Spyc::YAMLLoad($lang);
 	}
 	
 	public function block_pattern($block_name) {
@@ -63,16 +63,16 @@ class ThimbleParser {
 		return $this->render_variable($name, $post[$name], $block);
 	}
 
-  public function render_locale_string($key, $doc) {
-    if (func_num_args() > 2) {
-      $arguments = func_get_args();
-      $string = vsprintf($this->localization[$key], array_slice($arguments, 2));
-    } else {
-      $string = $this->localization[$key];
-    }
-    $doc = $this->render_variable("lang:$key", $string, $doc);
-    return $doc;
-  }
+	public function render_locale_string($key, $doc) {
+		if (func_num_args() > 2) {
+			$arguments = func_get_args();
+			$string = vsprintf($this->localization[$key], array_slice($arguments, 2));
+		} else {
+			$string = $this->localization[$key];
+		}
+		$doc = $this->render_variable("lang:$key", $string, $doc);
+		return $doc;
+	}
 
 	public function parse($document, $appearance_options = array()) {
 		$doc = $document;
@@ -85,8 +85,8 @@ class ThimbleParser {
 			$doc = $this->build_index($doc);
 		}
 
-    // Localize
-    $doc = $this->localize($doc);
+		// Localize
+		$doc = $this->localize($doc);
 		
 		// render Global Blocks		
 		if ($this->template['Description']) {
@@ -129,12 +129,12 @@ class ThimbleParser {
 	public function generate_meta($document, $appearance = array()) {
 		$dom = new simple_html_dom();
 		@$dom->load($document);
-    return $this->build_options($dom, $appearance);
-  }
+		return $this->build_options($dom, $appearance);
+	}
 	
 	public function build_options($dom, $meta_overrides = array()) {
-    $meta_elements = $dom->find("meta[name]");
-    $meta = array(
+		$meta_elements = $dom->find("meta[name]");
+		$meta = array(
 			'Color' => array(),
 			'Font' => array(),
 			'Boolean' => array(),
@@ -144,19 +144,15 @@ class ThimbleParser {
 		foreach ($meta_elements as $element) {
 			if (isset($element->content)) {
 				$name = $element->name;
-        $option = explode(':',$name);
-        if (count($meta_overrides) > 0) {
-          if (array_key_exists($name, $meta_overrides)) {
-            $element->content = $meta_overrides[$name];
-          } elseif (array_key_exists(str_replace(' ','_',$name), $meta_overrides)) {
-            $element->content = $meta_overrides[str_replace(' ','_',$name)];
-          } else {
-            if ($element->content) {
-              $element->content = '';
-            }
-          }
-        }
-        $content = $element->content;
+				$option = explode(':',$name);
+				if (count($meta_overrides) > 0) {
+					if (array_key_exists($name, $meta_overrides)) {
+						$element->content = $meta_overrides[$name];
+					} elseif (array_key_exists(str_replace(' ','_',$name), $meta_overrides)) {
+						$element->content = $meta_overrides[str_replace(' ','_',$name)];
+					}
+				}
+				$content = $element->content;
 				switch($option[0]) {
 					case 'color':
 						$meta['Color'][$option[1]] = $content;
@@ -176,7 +172,7 @@ class ThimbleParser {
 				}
 			}
 		}
-    return $this->parse_options($meta, $dom->save());
+		return $this->parse_options($meta, $dom->save());
 	}
 	
 	public function parse_options($options, $doc) {
@@ -234,14 +230,14 @@ class ThimbleParser {
 		return $doc;
 	}
 	
-  public function localize($doc) {
-    if (count($this->localization)) {
-      foreach (array_keys($this->localization) as $key) {
-        $doc = $this->render_locale_string($key, $doc);
-      }
-    }
-    return $doc;
-  }
+	public function localize($doc) {
+		if (count($this->localization)) {
+			foreach (array_keys($this->localization) as $key) {
+				$doc = $this->render_locale_string($key, $doc);
+			}
+		}
+		return $doc;
+	}
 
 	public function get_pages($pages, $document) {
 		$html = $document;
@@ -309,56 +305,55 @@ class ThimbleParser {
 			$html = $this->strip_block('Pagination', $html);
 		}
 
-    // Jump Pagination. It's hard
-    $html = preg_replace_callback(
-      '/{block:(JumpPagination length="(\d+)")}(.*?){\/block:JumpPagination}/is',
-      array($this,'render_jump_pagination'),
-      $html
-    );
+		// Jump Pagination. It's hard
+		$html = preg_replace_callback(
+			'/{block:(JumpPagination length="(\d+)")}(.*?){\/block:JumpPagination}/is',
+			array($this,'render_jump_pagination'),
+			$html
+		);
 
 		return $html;
 	}
 
-  public function render_jump_pagination($matches) {
-    $length = $matches[2];
-    $block = $matches[3];
-    $index = 1;
-    $current_page = 1;
-    $html = '';
+	public function render_jump_pagination($matches) {
+		$length = $matches[2];
+		$block = $matches[3];
+		$index = 1;
+		$current_page = 1;
+		$html = '';
 
-    while ($index <= $length) {
-      if ($index == $current_page) {
-        $html .= preg_replace_callback(
-          $this->block_pattern('CurrentPage'),
-          create_function(
-            '$matches',
-            '$pagination_block = $matches[2];
-             $pagination_block = preg_replace("/{PageNumber}/i",'.($index).',$pagination_block);
-             $pagination_block = preg_replace("/{URL}/i","/'.($index).'",$pagination_block);
-             return $pagination_block;'
-          ),
-          $block
-        );
-      } else {
-        $html .= preg_replace_callback(
-          $this->block_pattern('JumpPage'),
-          create_function(
-            '$matches',
-            '$pagination_block = $matches[2];
-             $pagination_block = preg_replace("/{PageNumber}/i",'.($index).',$pagination_block);
-             $pagination_block = preg_replace("/{URL}/i","/'.($index).'",$pagination_block);
-             return $pagination_block;'
-          ),
-          $block
-        );
-      }
-      $index++;
-    }
+		while ($index <= $length) {
+			if ($index == $current_page) {
+				$html .= preg_replace_callback(
+					$this->block_pattern('CurrentPage'),
+					create_function(
+						'$matches',
+						'$pagination_block = $matches[2];
+						$pagination_block = preg_replace("/{PageNumber}/i",'.($index).',$pagination_block);
+						$pagination_block = preg_replace("/{URL}/i","/'.($index).'",$pagination_block);
+						return $pagination_block;'
+					),
+					$block
+				);
+			} else {
+				$html .= preg_replace_callback(
+					$this->block_pattern('JumpPage'),
+					create_function(
+						'$matches',
+						'$pagination_block = $matches[2];
+						$pagination_block = preg_replace("/{PageNumber}/i",'.($index).',$pagination_block); $pagination_block = preg_replace("/{URL}/i","/'.($index).'",$pagination_block);
+						return $pagination_block;'
+					),
+					$block
+				);
+			}
+			$index++;
+		}
 
-    $html = $this->cleanup($html);
+		$html = $this->cleanup($html);
 
-    return $html;
-  }
+		return $html;
+	}
 	
 	public function get_posts($document) {
 		$html = preg_replace_callback(
@@ -370,61 +365,61 @@ class ThimbleParser {
 	}
 	
 	public function render_posts($matches) {
-    $block = $matches[2];
-    $html = '';
+		$block = $matches[2];
+		$html = '';
 		$posts = $this->template['Posts'];
-    foreach ($posts as $index => $post) {
+		foreach ($posts as $index => $post) {
 			if (($index+1) % 2) {
 				$block = $this->render_block('Odd', $block);
 			} else {
 				$block = $this->render_block('Even', $block);
 			}
 			$block = $this->render_block('Post'.($index + 1),$block);
-      $html .= $this->render_post($post, $block);
-    }
-    return $html;
+			$html .= $this->render_post($post, $block);
+		}
+		return $html;
 	}
 	
 	public function render_post($post, $block) {
-    $html = $this->prepare_post($post, $block);
+		$html = $this->prepare_post($post, $block);
 		$post_type = $post['Type'];
-    $markup = '';
+		$markup = '';
 		$pattern = $this->block_pattern($post_type);
 		$does_match = preg_match_all($pattern, $html, $posts);
-    if ($does_match) {
-      foreach($posts[2] as $index => $post_block) {
-        switch($post_type) {
-        case 'Text':
-          $markup = $this->render_text_post($post, $post_block);
-          break;
-        case 'Photo':
-          $markup = $this->render_photo_post($post, $post_block);
-          break;	
-        case 'Quote':
-          $markup = $this->render_quote_post($post, $post_block);
-          break;
-        case 'Link':
-          $markup = $this->render_link_post($post, $post_block);
-          break;
-        case 'Chat':
-          $markup = $this->render_chat_post($post, $post_block);
-          break;
-        case 'Audio':
-          $markup = $this->render_audio_post($post, $post_block);
-          break;
-        case 'Video':
-          $markup = $this->render_video_post($post, $post_block);
-          break;	
-        case 'Answer':
-          $markup = $this->render_answer_post($post, $post_block);
-          break;
-        }
-      }
-    }
-    if ($markup) {
-      $html = preg_replace($pattern, $markup, $html);
-    }
-    return $html;
+		if ($does_match) {
+			foreach($posts[2] as $index => $post_block) {
+				switch($post_type) {
+					case 'Text':
+						$markup = $this->render_text_post($post, $post_block);
+						break;
+					case 'Photo':
+						$markup = $this->render_photo_post($post, $post_block);
+						break;	
+					case 'Quote':
+						$markup = $this->render_quote_post($post, $post_block);
+						break;
+					case 'Link':
+						$markup = $this->render_link_post($post, $post_block);
+						break;
+					case 'Chat':
+						$markup = $this->render_chat_post($post, $post_block);
+						break;
+					case 'Audio':
+						$markup = $this->render_audio_post($post, $post_block);
+						break;
+					case 'Video':
+						$markup = $this->render_video_post($post, $post_block);
+						break;	
+					case 'Answer':
+						$markup = $this->render_answer_post($post, $post_block);
+						break;
+				}
+			}
+		}
+		if ($markup) {
+			$html = preg_replace($pattern, $markup, $html);
+		}
+		return $html;
 	}
 	
 	public function prepare_post($post, $markup) {
@@ -446,13 +441,13 @@ class ThimbleParser {
 		
 		if ($post['Reblog']) {
 			$block = $this->render_reblog_info($post, $block);
-    } else {
-      $block = $this->render_block('NotReblog', $block);
-    }
+		} else {
+			$block = $this->render_block('NotReblog', $block);
+		}
 
-    if ($post['ContentSource']) {
-      $block = $this->render_content_source($post, $block);
-    }
+		if ($post['ContentSource']) {
+			$block = $this->render_content_source($post, $block);
+		}
 		
 		$block = $this->render_block('More', $block);
 		return $block;
@@ -576,26 +571,26 @@ class ThimbleParser {
 		return $html;
 	}
 
-  protected function render_content_source($post, $block) {
-    $source = $post['ContentSource'];
-    $logo = $source['SourceLogo'];
-
-    $block = $this->render_post_variable('SourceURL', $source, $block);
-    $block = $this->render_post_variable('SourceTitle', $source, $block);
-
-    if ($logo) {
-      $block = $this->render_post_variable('BlackLogoURL', $logo, $block);
-      $block = $this->render_post_variable('LogoWidth', $logo, $block);
-      $block = $this->render_post_variable('LogoHeight', $logo, $block);
-      $block = $this->render_block('SourceLogo', $block);
-    } else {
-      $block = $this->render_block('NoSourceLogo', $block);
-    }
-
-    $block = $this->render_block('ContentSource', $block);
-
-    return $block;
-  }
+	protected function render_content_source($post, $block) {
+		$source = $post['ContentSource'];
+		$logo = $source['SourceLogo'];
+		
+		$block = $this->render_post_variable('SourceURL', $source, $block);
+		$block = $this->render_post_variable('SourceTitle', $source, $block);
+		
+		if ($logo) {
+			$block = $this->render_post_variable('BlackLogoURL', $logo, $block);
+			$block = $this->render_post_variable('LogoWidth', $logo, $block);
+			$block = $this->render_post_variable('LogoHeight', $logo, $block);
+			$block = $this->render_block('SourceLogo', $block);
+		} else {
+			$block = $this->render_block('NoSourceLogo', $block);
+		}
+		
+		$block = $this->render_block('ContentSource', $block);
+		
+		return $block;
+	}
 	
 	protected function render_text_post($post, $block) {
 		$html = '';

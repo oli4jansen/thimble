@@ -19,12 +19,13 @@ function ThimblePoll(theme, iframe) {
 
 
 $(document).ready(function(){
-  var form = $('#theme-select');
-  var select = form.children('#theme-selector');
-  var refresh = form.children('#auto-refresh');
+  var form = $('#theme-form');
+  var select = form.children().children('#theme-selector');
+  var refresh = form.children().children('#auto-refresh');
   var iframe = $('#theme-preview');
   var hash = window.location.hash;
-  var appearanceSelector = $('details summary');
+  var appearanceSelector = $('#appearance-selector summary');
+  var selector = $('#appearance-selector .options');
 
   function fontSelector (selected) {
     var select = $('<select></select>');
@@ -52,11 +53,10 @@ $(document).ready(function(){
   }
 
   function setAppearanceOptions (options) {
-    var selector = $('#appearance-selector .options');
     selector.children(':not(.submit)').remove();
     $.each(options, function (key, value) {
       $.each(value, function (name, content) {
-        var p = $('<p><label>'+name+'</label></p>');
+        var p = $('<p><span class="label">'+name+'</span></p>');
         var k = key.toLowerCase();
         switch (k) {
         case 'boolean':
@@ -67,7 +67,8 @@ $(document).ready(function(){
               is_content_true = (parseInt(content) > 0);
             }
           }
-          p.prepend('<input type="checkbox" name="if:'+name+'" '+(is_content_true ? 'checked' : '')+' />');
+          p.append('<input type="checkbox" name="if:'+name+'" '+(is_content_true ? 'checked' : '')+' />');
+          p.addClass('checkbox');
           break;
         case 'font':
           p.append(fontSelector(content).attr('name',k+':'+name));
@@ -76,7 +77,7 @@ $(document).ready(function(){
           p.append('<input type="text" value="'+content+'" name="'+k+':'+name+'" />');
           break; 
         }
-        p.insertBefore(selector.children('.submit'));
+        selector.append(p);
       });
     });
   }
@@ -91,6 +92,10 @@ $(document).ready(function(){
       parent.removeClass('open');
       options.hide();
     }
+  });
+  
+  $('.menu-trigger').bind('click', function (e) {
+    $('.holder').toggleClass('menu');
   });
 
   form.bind('submit',function(e){
