@@ -15,10 +15,31 @@
 <body>
 	<div class="sidemenu">
 		<form method="get" action="theme.php" id="theme-form">
-			<div class="title"><input type="submit" value="Apply" /></div>
+			<div class="title">
+				<input type="submit" value="Apply" />
+				<input type="button" class="gray" value="Open Docs" onclick="window.open('http://www.tumblr.com/docs/en/custom_themes', '_blank')" />
+			</div>
 	
 			<div class="menu-item">
-				<h3>Select theme</h3>
+				<h3>Select datasource</h3><br>
+				
+				<select name="data" id="data-selector">
+					<?php
+					foreach (glob('data/*.yml') as $data) {
+				    	$data = basename($data);
+				    	if (($data !== '.') && ($data !== '..')) {
+							echo '<option value="'.$data.'">'.$data.'</option>';
+						}
+					}
+					?>
+				</select>
+			</div>
+
+
+			<hr>
+			
+			<div class="menu-item">
+				<h3>Select theme</h3><br>
 				
 				<select name="theme" id="theme-selector">
 					<?php
@@ -31,9 +52,24 @@
 					?>
 				</select>
 			</div>
+			
+			<hr>
+			
+			<div class="menu-item">
+				<h3>Auto refresh</h3><br>
+				
+				<div class="options">
+					<p class="text">Auto refresh will automatically check for changes and refresh the page if needed.</p>
+					
+					<p class="checkbox">
+						<label for="auto-refresh" class="label">Check to activate</label>
+						<input type="checkbox" name="auto-refresh" id="auto-refresh">
+					</p>
+				</div>
+			</div>
 		
 			<hr>
-		
+			
 			<div class="menu-item" id="appearance-selector">
 				<h3>Appearance</h3>
 				<div class="options"></div>
@@ -44,19 +80,7 @@
 		<div id="header">
 			<span class="logo">thimble</span>
 		
-			<span class="menu-trigger">Settings</span>
-			
-		<!--	<details id="options-selector">
-				<summary>Options</summary>
-				<div class="options">
-					<a href="http://www.tumblr.com/docs/en/custom_themes">Theme Documentation</a>
-	
-					<input type="checkbox" name="auto-refresh" id="auto-refresh">
-					<label for="auto-refresh" class="small">Auto Refresh?</label>
-				</div>
-			</details>
-			-->
-			
+			<span class="menu-trigger">Settings</span>			
 		</div>
 		
 		<div id="theme-container">
