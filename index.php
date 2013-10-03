@@ -16,27 +16,9 @@
 	<div class="sidemenu">
 		<form method="get" action="theme.php" id="theme-form">
 			<div class="title">
-				<input type="submit" value="Apply" />
+				<input type="submit" value="Apply" id="submit" />
 				<input type="button" class="gray" value="Open Docs" onclick="window.open('http://www.tumblr.com/docs/en/custom_themes', '_blank')" />
 			</div>
-	
-			<div class="menu-item">
-				<h3>Select datasource</h3><br>
-				
-				<select name="data" id="data-selector">
-					<?php
-					foreach (glob('data/*.yml') as $data) {
-				    	$data = basename($data);
-				    	if (($data !== '.') && ($data !== '..')) {
-							echo '<option value="'.$data.'">'.$data.'</option>';
-						}
-					}
-					?>
-				</select>
-			</div>
-
-
-			<hr>
 			
 			<div class="menu-item">
 				<h3>Select theme</h3><br>
@@ -53,6 +35,50 @@
 				</select>
 			</div>
 			
+			<hr>
+			
+			<div class="menu-item">
+				<h3>Select datasource</h3><br>
+				
+				<select name="data" id="data-selector">
+					<option disabled="disabled">YAML data</option>
+					<?php
+					foreach (glob('data/*.yml') as $data) {
+				    	$data = basename($data);
+				    	if (($data !== '.') && ($data !== '..')) {
+							echo '<option value="'.$data.'">'.$data.'</option>';
+						}
+					}
+					?>
+					<option disabled="disabled"></option>
+					<option disabled="disabled">Imported data</option>
+					<?php
+					foreach (glob('data/*.json') as $data) {
+				    	$data = basename($data);
+				    	if (($data !== '.') && ($data !== '..')) {
+							echo '<option value="'.$data.'">'.$data.'</option>';
+						}
+					}
+					?>
+				</select>
+			</div>
+
+			<div class="menu-item">
+				<h3>Import Tumblr blog</h3><br>
+				
+				<div class="options">
+					<p class="text">This will import posts from a Tumblr blog and let you use it as a datasource.</p>
+					
+					<p>
+						<span class="label">Blog domain</span><input type="text" name="blog-domain" id="blog-domain" placeholder="staff.tumblr.com">
+					</p>
+					
+					<p class="button">
+						<input type="submit" value="Import">
+					</p>
+				</div>
+			</div>
+
 			<hr>
 			
 			<div class="menu-item">

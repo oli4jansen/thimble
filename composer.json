@@ -1,0 +1,17 @@
+{
+
+  "name": "oli4jansen/thimble",
+
+  "description": "Protect your fingers from tedious copy-pasting.",
+
+  "homepage": "https://github.com/oli4jansen/thimble",
+
+  "type": "project",
+
+  "require": {
+  	"tumblr/tumblr": "*",
+    "eher/oauth": "1.0.*",
+    "guzzle/guzzle": ">=3.1.0,<4"
+  }
+
+}

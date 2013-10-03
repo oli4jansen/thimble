@@ -21,6 +21,7 @@ function ThimblePoll(theme, iframe) {
 $(document).ready(function(){
   var form = $('#theme-form');
   var select = form.children().children('#theme-selector');
+  var selectData = form.children().children('#data-selector');
   var refresh = form.children().children('#auto-refresh');
   var iframe = $('#theme-preview');
   var hash = window.location.hash;
@@ -114,6 +115,12 @@ $(document).ready(function(){
     iframe.attr('src','theme.php?'+$(this).serialize());
     if (refresh.is(':checked')) {
       ThimblePoll(select.children(':selected').val(), iframe.get(0));
+    }
+    if ($('#blog-domain').val()) {
+    	selectData.append(
+    		$('<option></option>').val($('#blog-domain').val()+'.json').html($('#blog-domain').val()+'.json')
+    	);
+    	$('#blog-domain').val("");
     }
     return false;
   });

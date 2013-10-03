@@ -114,7 +114,7 @@ body {
 			float: left;
 		}
 
-input[type=submit] {
+input[type=submit], input[type=button] {
 	-webkit-box-shadow: rgba(255, 255, 255, 0.6) 0px 1px 0px 0px inset;
 
 	background-color: rgba(0, 0, 0, 0);
@@ -228,9 +228,6 @@ input[type=text] {
 		#theme-form select:hover {
 			background: rgba(0,0,0,.13);
 		}
-	#theme-form .menu-item {
-		padding: ;
-	}
 	#theme-form #appearance-selector {
 		position: relative;
 		margin: 0;
@@ -271,7 +268,7 @@ input[type=text] {
 					text-align: left;
 					font-size: .9em;
 				}
-				#theme-form .options p input,
+				#theme-form .options p input[type=text],
 				#theme-form .options p select {
 					display: inline-block;
 					width: 70%;
@@ -297,6 +294,10 @@ input[type=text] {
 				}
 				#theme-form .options p.text {
 					padding: 10px 12px;
+				}
+				#theme-form .options p.button {
+					padding: 5px 7px;
+					text-align: right;
 				}
 				
 		#theme-form #appearance-selector .options label {

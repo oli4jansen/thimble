@@ -3,6 +3,7 @@
 require_once 'spyc.php';
 require_once 'simple_html_dom.php';
 
+
 class ThimbleParser {
 	
 	protected $variables = '/{([A-Za-z][A-Za-z0-9\-]*)}/i';
@@ -29,9 +30,22 @@ class ThimbleParser {
 	
 	public $template = array();	
 		
-	public function __construct($data = array(), $lang = array(), $type = 'index') {
+	public function __construct($data = array(), $extention = 'yml', $lang = array(), $type = 'index') {
+		error_log('Constructor');
 		$this->type = $type;
-		$this->template = array_merge($this->defaults, Spyc::YAMLLoad($data));
+		
+		if($extention == 'json')
+		{
+			$dataParsed = json_decode($data, true);
+			error_log('LOADED JSON');
+		}
+		else
+		{
+			$dataParsed = Spyc::YAMLLoad($data);
+			error_log('LOADED YAML');
+		}
+		
+		$this->template = array_merge($this->defaults, $dataParsed);
 		$this->localization = Spyc::YAMLLoad($lang);
 	}
 	
@@ -51,6 +65,7 @@ class ThimbleParser {
 	}
 	
 	public function render_variable($name, $replacement, $block) {
+	
 		$block = preg_replace('/{'.$name.'}/i', $replacement, $block);
 		$block = preg_replace('/{Plaintext'.$name.'}/i', htmlentities($replacement), $block);
 		$block = preg_replace('/{JS'.$name.'}/i', json_encode($replacement), $block);
@@ -288,13 +303,13 @@ class ThimbleParser {
 	public function render_pagination($pages, $document) {
 		$html = $document;
 		if ($pages['NextPage'] || $pages['PreviousPage']) {
-			if ($pages['NextPage']) {
+			if (isset($pages['NextPage']) && $pages['NextPage']) {
 				$html = $this->render_variable('NextPage', $pages['NextPage'], $html);
 				$html = $this->render_block('NextPage', $html);
 			} else {
 				$html = $this->strip_block('NextPage', $html);
 			}
-			if ($pages['PreviousPage']) {
+			if (isset($pages['PreviousPage']) && $pages['PreviousPage']) {
 				$html = $this->render_variable('PreviousPage', $pages['PreviousPage'], $html);
 				$html = $this->render_block('PreviousPage', $html);
 			} else {
@@ -427,11 +442,11 @@ class ThimbleParser {
 		$block = $this->render_post_variable('Permalink', $post, $block);
 		$block = $this->render_post_variable('PostId', $post, $block);
 		$block = $this->render_post_date($post, $block);
-		if ($post['Tags']) {
+		if (isset($post['Tags']) && $post['Tags']) {
 			$block = $this->render_tags_for_post($post, $block);
 		}
 		
-		if ($post['NoteCount']) {
+		if (isset($post['NoteCount']) && $post['NoteCount']) {
 			$block = $this->render_post_variable('NoteCount', $post, $block);
 			$block = $this->render_block('NoteCount', $block);
 			$block = $this->render_variable('NoteCountWithLabel', $post['NoteCount']." notes", $block);
@@ -439,13 +454,13 @@ class ThimbleParser {
 			$block = $this->strip_block('NoteCount',$block);
 		}
 		
-		if ($post['Reblog']) {
+		if (isset($post['Reblog']) && $post['Reblog']) {
 			$block = $this->render_reblog_info($post, $block);
 		} else {
 			$block = $this->render_block('NotReblog', $block);
 		}
 
-		if ($post['ContentSource']) {
+		if (isset($post['ContentSource']) && $post['ContentSource']) {
 			$block = $this->render_content_source($post, $block);
 		}
 		
@@ -505,7 +520,7 @@ class ThimbleParser {
 		$html = $this->render_variable('Minutes', strftime('%M',$time), $html);
 		$html = $this->render_variable('Seconds', strftime('%S',$time), $html);
 
-    if ($post['Reblog']) {
+    if (isset($post['Reblog']) && $post['Reblog']) {
       $html = $this->render_locale_string('Reblogged TimeAgo from ReblogParentName',$html, $day_difference." days ago", $post['Reblog']['ReblogParentName']);
     }
 
@@ -595,7 +610,7 @@ class ThimbleParser {
 	protected function render_text_post($post, $block) {
 		$html = '';
 		$html = $this->render_post_variable('Body', $post, $block);
-		if ($post['Title']) {
+		if (isset($post['Title']) && $post['Title']) {
 			$html = $this->render_post_variable('Title', $post, $html);
 			$html = $this->render_block('Title', $html);
 		} else {
@@ -625,20 +640,20 @@ class ThimbleParser {
 		foreach($photo_sizes as $size) {
 			$html = $this->render_post_variable($size, $post, $html);
 		}
-		if ($post['Caption']) {
+		if (isset($post['Caption']) && $post['Caption']) {
 			$html = $this->render_post_variable('Caption', $post, $html);
 			$html = $this->render_variable('PhotoAlt', strip_tags($post['Caption']), $html);
 			$html = $this->render_block('Caption', $html);
 		} else {
 			$html = $this->strip_block('Caption',$html);
 		}
-		if ($post['PhotoURL-HighRes']) {
+		if (isset($post['PhotoURL-HighRes']) && $post['PhotoURL-HighRes']) {
 			$html = $this->render_post_variable('PhotoURL-HighRes', $post, $html);
 			$html = $this->render_block('HighRes', $html);
 		} else {
 			$html = $this->strip_block('HighRes',$html);
 		}
-		if ($post['LinkURL']) {
+		if (isset($post['LinkURL']) && $post['LinkURL']) {
 			$html = $this->render_post_variable('LinkURL', $post, $html);
 			$html = $this->render_variable(
 				'LinkOpenTag', 
@@ -689,7 +704,7 @@ class ThimbleParser {
 			}
 		}
 		$html = preg_replace($this->block_pattern('Lines'), $line_markup, $block);
-		if ($post['Title']) {
+		if (isset($post['Title']) && $post['Title']) {
 			$html = $this->render_post_variable('Title', $post, $html);
 			$html = $this->render_block('Title', $html);
 		} else {
@@ -717,31 +732,31 @@ class ThimbleParser {
 		$html = $this->render_variable('FormatPlayCount', number_format($post['PlayCount']), $html);
 		$html = $this->render_variable('PlayCountWithLabel', number_format($post['PlayCount'])." plays", $html);
 		
-		if ($post['Caption']) {
+		if (isset($post['Caption']) && $post['Caption']) {
 			$html = $this->render_post_variable('Caption', $post, $html);
 			$html = $this->render_block('Caption', $html);
 		} else {
 			$html = $this->strip_block('Caption', $html);
 		}
-		if ($post['AlbumArtURL']) {
+		if (isset($post['AlbumArtURL']) && $post['AlbumArtURL']) {
 			$html = $this->render_post_variable('AlbumArtURL', $post, $html);
 			$html = $this->render_block('AlbumArt', $html);
 		} else {
 			$html = $this->strip_block('AlbumArt', $html);
 		}
-		if ($post['Artist']) {
+		if (isset($post['Artist']) && $post['Artist']) {
 			$html = $this->render_post_variable('Artist', $post, $html);
 			$html = $this->render_block('Artist', $html);
 		} else {
 			$html = $this->strip_block('Artist', $html);
 		}
-		if ($post['Album']) {
+		if (isset($post['Album']) && $post['Album']) {
 			$html = $this->render_post_variable('Album', $post, $html);
 			$html = $this->render_block('Album', $html);
 		} else {
 			$html = $this->strip_block('Album', $html);
 		}
-		if ($post['TrackName']) {
+		if (isset($post['TrackName']) && $post['TrackName']) {
 			$html = $this->render_post_variable('TrackName', $post, $html);
 			$html = $this->render_block('TrackName', $html);
 		} else {
@@ -755,7 +770,7 @@ class ThimbleParser {
 		$html = $block;
 		$html = $this->render_post_variable('Video-500', $post, $html);
 		$html = $this->render_post_variable('Video-400', $post, $html);
-		$html = $this->render_post_variable('Video-200', $post, $html);
+		$html = $this->render_post_variable('Video-250', $post, $html);
 		if ($post['Caption']) {
 			$html = $this->render_post_variable('Caption', $post, $html);
 			$html = $this->render_block('Caption', $html);
