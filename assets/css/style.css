@@ -215,7 +215,7 @@ input[type=text] {
 		-webkit-transition: .3s;
 		transition: .3s;
 	}
-		#header .menu-trigger:hover {
+		#header .menu-trigger:hover, #header .import-trigger:hover {
 			background: rgba(255,255,255,.0666667);
 		}
 	
