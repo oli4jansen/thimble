@@ -1,25 +1,12 @@
 <?php
+require_once('config.php');
 require_once('vendor/autoload.php');
 require_once('parser/parser.php');
-require_once('parser/tumblr_importer.php');
+//require_once('parser/tumblr_importer.php');
 
-// Some config shizzle. Needs to get another space at some point.
-$VERSION = '0.3.0';
-$TUMBLR_API_PUBLIC_KEY = '----------------';
+$THEME = $THEME_LOCATION.$_GET['theme'];
 $DATA = $_GET['data'];
-$LOCALE = 'en-us.yml';
-$THEME = 'themes/'.$_GET['theme'];
 $options = $_REQUEST;
-
-// Importing a Tumblr blog?
-if(isset($options['blog-domain']) && !empty($options['blog-domain']))
-{
-	$url = parse_url($options['blog-domain']);
-	$domain = rtrim($url['host'].$url['path'], "/");
-	
-	$importer = new Tumblr_Importer($TUMBLR_API_PUBLIC_KEY);
-	$importer->importBlog($domain, 'data/');
-}
 
 unset($options['theme'], $options['auto-refresh']);
 
@@ -34,7 +21,7 @@ if (@strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']) == $last_modified_time || tri
 	exit;
 }
 
-$theme = new ThimbleParser(file_get_contents('data/'.$DATA), pathinfo($DATA, PATHINFO_EXTENSION), file_get_contents('lang/'.$LOCALE));
+$theme = new ThimbleParser(file_get_contents($DATA_LOCATION.$DATA), pathinfo($DATA, PATHINFO_EXTENSION), file_get_contents('lang/'.$LOCALE));
 echo $theme->parse(file_get_contents($THEME), $options);
 
 ?>

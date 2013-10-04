@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "c66487eb331edaafcd4ac6d7de63bf0a",
+    "hash": "4db249d522d8a94da1809f274c926582",
     "packages": [
         {
             "name": "eher/oauth",
@@ -131,6 +131,45 @@
             "time": "2013-10-02 20:47:00"
         },
         {
+            "name": "oli4jansen/tumblrimporter",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/oli4jansen/TumblrImporter.git",
+                "reference": "42822535d8da39187cd1bdd70499797803cf0b2e"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/oli4jansen/TumblrImporter/zipball/42822535d8da39187cd1bdd70499797803cf0b2e",
+                "reference": "42822535d8da39187cd1bdd70499797803cf0b2e",
+                "shasum": ""
+            },
+            "require": {
+                "tumblr/tumblr": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "TumblrImporter\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Olivier Jansen",
+                    "email": "oli4jansen.nl@gmail.com",
+                    "homepage": "https://github.com/oli4jansen",
+                    "role": "developer"
+                }
+            ],
+            "description": "Class for importing Tumblr blogs to Thimble",
+            "homepage": "https://github.com/oli4jansen/TumblrImporter",
+            "time": "2013-10-04 14:41:39"
+        },
+        {
             "name": "symfony/event-dispatcher",
             "version": "v2.3.5",
             "target-dir": "Symfony/Component/EventDispatcher",
@@ -241,9 +280,9 @@
 
     ],
     "minimum-stability": "stable",
-    "stability-flags": [
-
-    ],
+    "stability-flags": {
+        "oli4jansen/tumblrimporter": 20
+    },
     "platform": [
 
     ],

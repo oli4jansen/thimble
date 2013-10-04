@@ -24,7 +24,9 @@ Its only goal is to give you a reasonable idea of what your theme will look like
 
 Put your theme in the theme directory. You'll be able to select it from the application.
 
-It reads data out of a [YAML](http://yaml.org/) file. If you'd like to render your own custom data, take a look at `data/demo.yml` for reference. Create a new YAML document in the data directory, and in `theme.php`, set the variable `$DATA` to your document's filename.
+It reads data out of a [YAML](http://yaml.org/) or JSON file. If you'd like to render your own custom data, take a look at `data/demo.yml` for reference. Create a new YAML document in the data directory, and select it from the Thimble interface.
+
+You can also import data from a Tumblr blog via the interface. Use the domain of the blog, without http:// or trailing slash. This data will be converted to a JSON file.
 
 ### Caveats
 

@@ -1,17 +1,26 @@
 {
 
   "name": "oli4jansen/thimble",
-
+  
   "description": "Protect your fingers from tedious copy-pasting.",
 
   "homepage": "https://github.com/oli4jansen/thimble",
 
+  "authors": [
+    {
+      "name": "Olivier Jansen",
+      "email": "oli4jansen.nl@gmail.com",
+      "homepage": "https://github.com/oli4jansen",
+      "role": "developer"
+    }
+  ],
+
   "type": "project",
+  
+  "license": "http://creativecommons.org/licenses/by-nc-sa/3.0/",
 
   "require": {
-  	"tumblr/tumblr": "*",
-    "eher/oauth": "1.0.*",
-    "guzzle/guzzle": ">=3.1.0,<4"
+  	"oli4jansen/tumblrimporter": "dev-master"
   }
 
 }

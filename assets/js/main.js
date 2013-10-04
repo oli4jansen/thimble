@@ -27,6 +27,8 @@ $(document).ready(function(){
   var hash = window.location.hash;
   var appearanceSelector = $('#appearance-selector summary');
   var selector = $('#appearance-selector .options');
+  var importTrigger = $('.import-trigger');
+  var formImport = $('.popup form');
 
   function fontSelector (selected) {
     var select = $('<select></select>');
@@ -100,6 +102,7 @@ $(document).ready(function(){
   });
 
   form.bind('submit',function(e){
+  	$('.loader').show(0);
     var location;
     var modal = appearanceSelector.siblings('.options');
     if (window.location.hash) {
@@ -116,13 +119,28 @@ $(document).ready(function(){
     if (refresh.is(':checked')) {
       ThimblePoll(select.children(':selected').val(), iframe.get(0));
     }
-    if ($('#blog-domain').val()) {
-    	selectData.append(
-    		$('<option></option>').val($('#blog-domain').val()+'.json').html($('#blog-domain').val()+'.json')
-    	);
-    	$('#blog-domain').val("");
-    }
     return false;
+  });
+  
+  formImport.bind('submit',function(e){
+  	e.preventDefault();
+  	
+  	var blog = $('#blogDomain').val();
+  	$('.popup').addClass('loading');
+
+	$.get( "import.php", { blogDomain: blog })
+		.done(function(){
+			location.reload();
+		})
+		.fail(function(){
+			alert('Something went wrong importing the blog. Please check your logs. The URL could also be invalid.');
+		  	$('.popup').removeClass('loading');
+		});  	
+  });
+  
+  importTrigger.bind('click', function(){
+  	$('iframe').toggleClass('darker');
+	$('.popup').fadeToggle(500);
   });
   
   select.bind('change',function(e){

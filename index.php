@@ -41,7 +41,18 @@
 				<h3>Select datasource</h3><br>
 				
 				<select name="data" id="data-selector">
-					<option disabled="disabled">YAML data</option>
+					<option disabled="disabled">Imported blogs</option>
+					<?php
+					$files = glob('data/*.json');
+					usort($files, create_function('$a,$b', 'return filemtime($a) - filemtime($b);'));
+					foreach ($files as $data) {
+				    	$data = basename($data);
+				    	if (($data !== '.') && ($data !== '..')) {
+							echo '<option value="'.$data.'">'.$data.'</option>';
+						}
+					}
+					?>
+					<option disabled="disabled">YAML files</option>
 					<?php
 					foreach (glob('data/*.yml') as $data) {
 				    	$data = basename($data);
@@ -50,33 +61,7 @@
 						}
 					}
 					?>
-					<option disabled="disabled"></option>
-					<option disabled="disabled">Imported data</option>
-					<?php
-					foreach (glob('data/*.json') as $data) {
-				    	$data = basename($data);
-				    	if (($data !== '.') && ($data !== '..')) {
-							echo '<option value="'.$data.'">'.$data.'</option>';
-						}
-					}
-					?>
 				</select>
-			</div>
-
-			<div class="menu-item">
-				<h3>Import Tumblr blog</h3><br>
-				
-				<div class="options">
-					<p class="text">This will import posts from a Tumblr blog and let you use it as a datasource.</p>
-					
-					<p>
-						<span class="label">Blog domain</span><input type="text" name="blog-domain" id="blog-domain" placeholder="staff.tumblr.com">
-					</p>
-					
-					<p class="button">
-						<input type="submit" value="Import">
-					</p>
-				</div>
 			</div>
 
 			<hr>
@@ -106,7 +91,29 @@
 		<div id="header">
 			<span class="logo">thimble</span>
 		
-			<span class="menu-trigger">Settings</span>			
+			<span class="menu-trigger">Settings</span>
+			
+			<span class="import-trigger">Import Blog</span>
+		</div>
+
+		<div class="popup">
+			<form id="import-form">
+				<h3>Import Tumblr blog</h3>
+						
+				<div class="options">
+					<p class="text">This will import posts from a Tumblr blog and let you use it as a datasource.</p>
+							
+					<p>
+						<span class="label">Blog domain or Tumblr username</span><input type="text" id="blogDomain" placeholder="staff.tumblr.com or staff">
+					</p>
+							
+					<p class="button">
+						<span class="loader"></span>
+						<input type="button" value="Close" class="close import-trigger">
+						<input type="submit" value="Import blog" class="submit">
+					</p>
+				</div>
+			</form>
 		</div>
 		
 		<div id="theme-container">
