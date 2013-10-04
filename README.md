@@ -12,7 +12,11 @@ Follow along at: http://www.tumblr.com/docs/en/custom_themes
 
 ### Install It
 
-Put it in a PHP server. Any flavor of *AMP will do. I don't recommend putting it on a public-facing server. Point your browser to `index.php`.
+1. Put it in a PHP server. Any flavor of *AMP will do. I don't recommend putting it on a public-facing server.
+
+2. Run `composer install` on the project folder to install all dependencies.
+
+3. Point your browser to `index.php`.
 
 I don't know if it will work with a version of PHP less than 5.2.11.
 

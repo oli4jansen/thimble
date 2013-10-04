@@ -8,9 +8,16 @@
 	<meta name="description" content="Thimble is a tool for easily developing Tumblr themes, built by Mark Wunsch and Olivier Jansen.">
     <meta name="viewport" content="width=device-width">
 
+	<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+
 	<script type="text/javascript" src="assets/js/jquery.js"></script>
 	<script type="text/javascript" src="assets/js/main.js"></script>	
-	<link type="text/css" rel="stylesheet" href="assets/css/style.css">
+	
+	<script type="text/javascript">
+		$(document).ready(function(){
+			thimble.initialize();  
+		});
+	</script>	
 </head>
 <body>
 	<div class="sidemenu">
@@ -63,21 +70,6 @@
 					?>
 				</select>
 			</div>
-
-			<hr>
-			
-			<div class="menu-item">
-				<h3>Auto refresh</h3><br>
-				
-				<div class="options">
-					<p class="text">Auto refresh will automatically check for changes and refresh the page if needed.</p>
-					
-					<p class="checkbox">
-						<label for="auto-refresh" class="label">Check to activate</label>
-						<input type="checkbox" name="auto-refresh" id="auto-refresh">
-					</p>
-				</div>
-			</div>
 		
 			<hr>
 			
@@ -93,7 +85,7 @@
 		
 			<span class="menu-trigger">Settings</span>
 			
-			<span class="import-trigger">Import Blog</span>
+			<span class="import-trigger">Import a Blog</span>
 		</div>
 
 		<div class="popup">
